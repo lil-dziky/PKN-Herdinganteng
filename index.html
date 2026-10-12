@@ -1,0 +1,110 @@
+<!DOCTYPE html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Quest Hak & Kewajiban Sekolah</title>
+<style>
+:root{--bg:#eaf4ff;--card:#fff;--tx:#1d2b3a;--mut:#5b6b7b;--pri:#3b82f6;--hak:#10b981;--kew:#f59e0b;--bad:#ef4444;--ln:#d3e2f5;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0f1b2d;--card:#182740;--tx:#eaf1fb;--mut:#9fb2c8;--ln:#2a3d5c}}
+:root[data-theme=dark]{--bg:#0f1b2d;--card:#182740;--tx:#eaf1fb;--mut:#9fb2c8;--ln:#2a3d5c}
+html,body{height:100%}body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 system-ui,"Segoe UI",Roboto,sans-serif}
+#app{max-width:480px;margin:auto;padding:14px}
+h1{margin:.2em 0;font-size:1.6rem;text-align:center}.mut{color:var(--mut)}.c{text-align:center}
+.card{background:var(--card);border:2px solid var(--ln);border-radius:18px;padding:14px;margin:12px 0}
+.btn,.opt{display:block;width:100%;font:inherit;font-weight:600;border:0;border-radius:14px;padding:13px;margin:8px 0;cursor:pointer;text-align:left}
+.btn{background:var(--pri);color:#fff;text-align:center;box-shadow:0 4px 0 #1d4ed8}.btn.h{background:var(--hak);box-shadow:0 4px 0 #047857}.btn.k{background:var(--kew);box-shadow:0 4px 0 #b45309}.btn:active{transform:translateY(3px);box-shadow:none}
+.opt{background:var(--bg);color:var(--tx);border:2px solid var(--ln)}.opt.ok{background:#d1fae5;border-color:var(--hak);color:#064e3b}.opt.no{background:#fee2e2;border-color:var(--bad);color:#7f1d1d}
+.stage{height:130px;border-radius:18px;background:linear-gradient(#7dd3fc,#bbf7d0 75%,#86efac);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+.stage:after{content:"";position:absolute;bottom:0;left:0;right:0;height:22px;background:#4ade80}
+.em{font-size:3.4rem;animation:fl 2.4s ease-in-out infinite;z-index:1}.pop .em{animation:pop .6s}.shake .em{animation:sh .5s}
+@keyframes fl{50%{transform:translateY(-8px)}}@keyframes pop{50%{transform:scale(1.5) rotate(8deg)}}@keyframes sh{25%{transform:translateX(-10px)}75%{transform:translateX(10px)}}
+.hud{display:flex;justify-content:space-between;font-weight:700;background:var(--card);border-radius:14px;padding:8px 12px;border:2px solid var(--ln)}
+.tag{display:inline-block;color:#fff;border-radius:99px;padding:1px 10px;font-size:.78rem;font-weight:700}.tag.h{background:var(--hak)}.tag.k{background:var(--kew)}
+.fb.g{border-color:var(--hak)}.fb.r{border-color:var(--bad)}.fb p{margin:.5em 0}
+.tabs{display:flex;gap:6px}.tabs button{flex:1;padding:9px;border-radius:12px;border:2px solid var(--ln);background:var(--card);color:var(--tx);font:inherit;font-weight:600}.tabs .on{background:var(--pri);color:#fff}
+summary{cursor:pointer;font-weight:700}details p{margin:.5em 0}.mascot{font-size:4rem;text-align:center;animation:fl 2.4s infinite}
+.stage{height:auto;background:none}.stage:after{display:none}.stage svg{display:block}.stage.mini{margin:8px 0}.mascot{display:flex;justify-content:center}
+.cast{animation:bob 2.4s ease-in-out infinite}.cl{animation:dr 9s ease-in-out infinite alternate}
+@keyframes bob{50%{transform:translateY(-3px)}}@keyframes dr{to{transform:translateX(26px)}}@keyframes jp{40%{transform:translateY(-12px)}}
+.pop .cast{animation:jp .6s}.shake .cast{animation:sh .5s}
+</style></head><body><div id="app"></div>
+<script>
+const D=[
+{t:"k",e:"⏰🏫",n:"Terlambat Upacara",s:"Bimo bangun kesiangan dan tiba di gerbang saat upacara sudah dimulai.",o:["Memanjat pagar belakang diam-diam","Lapor ke guru piket, jujur soal alasan, lalu ikut arahan","Pulang dan bolos saja"],a:1,p:"UU No. 20/2003 (Sisdiknas) Pasal 12 ayat (2) huruf a",w:"Peserta didik wajib menjaga norma pendidikan agar proses belajar berjalan baik. Disiplin dan jujur adalah bagian dari norma itu.",an:"Seperti naik bus yang sudah berangkat: kamu lapor ke petugas, bukan melompat lewat jendela."},
+{t:"h",e:"🙋‍♀️❓",n:"Berani Bertanya",s:"Sinta belum paham pelajaran, tapi takut ditertawakan teman.",o:["Diam dan menyontek PR teman","Angkat tangan lalu bertanya dengan sopan","Pura-pura paham"],a:1,p:"UU No. 23/2002 jo. UU No. 35/2014 Pasal 10; UUD 1945 Pasal 28F",w:"Anak berhak menyatakan pendapat dan mencari informasi sesuai usianya demi mengembangkan diri. Bertanya adalah cara memakai hak itu secara santun.",an:"Seperti bertanya arah saat tersesat: bertanya bukan tanda lemah, itu cara tercepat sampai tujuan."},
+{t:"k",e:"🧹🧽",n:"Jadwal Piket",s:"Hari ini giliran Rafi piket, tapi temannya mengajak main bola.",o:["Piket dulu bersama regu, baru main","Minta teman lain menggantikan tanpa izin","Pura-pura sakit"],a:0,p:"UU No. 20/2003 Pasal 12 ayat (2) huruf a; UU No. 23/2002 jo. UU No. 35/2014 Pasal 19 huruf e",w:"Kebersihan kelas dijaga bersama. Menjalankan piket adalah bagian dari norma sekolah dan etika serta akhlak mulia.",an:"Seperti rumah bersama: kalau satu orang tidak mencuci piring, semua penghuni ikut terkena dampaknya."},
+{t:"h",e:"🛡️😢",n:"Dilindungi dari Perundungan",s:"Dina terus diejek dan didorong oleh beberapa teman di lorong sekolah.",o:["Membalas dengan memukul","Menyimpan bukti, lalu lapor ke guru BK atau wali kelas","Diam karena takut"],a:1,p:"UU No. 35/2014 Pasal 54 ayat (1); Permendikbudristek No. 46/2023",w:"Anak di lingkungan sekolah wajib dilindungi dari kekerasan, termasuk oleh sesama murid. Melapor membuat mekanisme perlindungan itu bekerja.",an:"Seperti alarm kebakaran: menekan alarm bukan mengadu, tetapi menyelamatkan semua orang."},
+{t:"k",e:"👩‍🏫🙏",n:"Menghormati Guru",s:"Pak Guru menegur Aldo karena mengobrol saat pelajaran, dan Aldo ingin membantah dengan ketus.",o:["Menjawab ketus supaya terlihat berani","Mendengarkan, minta maaf, dan memperbaiki sikap","Keluar kelas sambil membanting pintu"],a:1,p:"UU No. 23/2002 jo. UU No. 35/2014 Pasal 19 huruf a",w:"Anak berkewajiban menghormati orang tua, wali, dan guru. Keberatan tetap boleh disampaikan, asalkan sopan dan pada waktu yang tepat.",an:"Seperti wasit di lapangan: boleh protes dengan sopan, tetapi tidak melempar bola ke wasit."},
+{t:"h",e:"🕌⛪🕍",n:"Pendidikan Agama",s:"Kevin menganut agama yang gurunya belum tersedia di sekolah.",o:["Ikut pelajaran agama lain tanpa bicara","Meminta (bersama orang tua) sekolah memfasilitasi guru seagama","Berhenti mengikuti pelajaran agama"],a:1,p:"UU No. 20/2003 Pasal 12 ayat (1) huruf a; UUD 1945 Pasal 29 ayat (2)",w:"Peserta didik berhak mendapat pendidikan agama sesuai agamanya, diajarkan pendidik yang seagama. Cara tepatnya adalah menyampaikan kebutuhan itu ke sekolah.",an:"Seperti memesan di restoran: kamu berhak dilayani sesuai pesananmu, dan pelayan perlu tahu pesananmu."},
+{t:"h",e:"🎓💰",n:"Hak Beasiswa",s:"Tono berprestasi, tetapi keluarganya kesulitan membiayai kebutuhan sekolah.",o:["Berhenti sekolah","Bertanya ke wali kelas atau sekolah soal beasiswa dan memenuhi syaratnya","Meminta teman membuatkan nilai bagus"],a:1,p:"UU No. 20/2003 Pasal 12 ayat (1) huruf c dan d",w:"Murid berprestasi berhak atas beasiswa, begitu pula yang orang tuanya tidak mampu membiayai. Hak itu dipakai lewat prosedur dan syarat yang berlaku.",an:"Seperti kartu perpustakaan: layanannya tersedia untukmu, tetapi kamu perlu mendaftar dan memenuhi syarat."},
+{t:"h",e:"♿🏫",n:"Akses untuk Semua",s:"Rani pengguna kursi roda, tetapi kelasnya di lantai 2 tanpa jalur akses.",o:["Pindah sekolah tanpa bicara","Menyampaikan kebutuhan akses ke sekolah, teman membantu sementara","Tidak masuk saat ada pelajaran di lantai 2"],a:1,p:"UU No. 8/2016 Pasal 10; UU No. 20/2003 Pasal 5 ayat (2)",w:"Penyandang disabilitas berhak atas pendidikan yang layak, sehingga sekolah perlu menyediakan akomodasi. Menyampaikan kebutuhan membuat hak itu bisa dipenuhi.",an:"Seperti jalur landai di gedung: pintu yang bisa dipakai semua orang membuat gedung benar-benar terbuka."},
+{t:"k",e:"🤝🌏",n:"Menghargai Perbedaan",s:"Saat kerja kelompok, teman baru dari daerah lain diejek karena logat bicaranya.",o:["Ikut tertawa agar diterima","Menegur dengan sopan dan mengajaknya ikut berdiskusi","Memilih kelompok lain"],a:1,p:"UUD 1945 Pasal 28J ayat (1); UU No. 20/2003 Pasal 4 ayat (1)",w:"Setiap orang wajib menghormati hak asasi orang lain, dan pendidikan dijalankan tanpa diskriminasi serta menghargai kemajemukan.",an:"Seperti orkestra: alat musik yang berbeda justru membuat lagunya kaya."},
+{t:"h",e:"📣🍎",n:"Menyampaikan Usul",s:"Banyak murid ingin kantin menyediakan jajanan yang lebih sehat.",o:["Mencorat-coret dinding kantin","Menyampaikan usul lewat OSIS, kotak saran, atau wali kelas","Mengeluh saja di media sosial"],a:1,p:"UUD 1945 Pasal 28E ayat (3); UU No. 35/2014 Pasal 10",w:"Murid berhak menyampaikan pendapat. Jalur resmi dan santun membuat usul didengar, bukan menimbulkan masalah baru.",an:"Seperti memasukkan surat ke kotak pos beralamat jelas: sampai ke orang yang bisa memutuskan."},
+{t:"h",e:"⚽😴",n:"Waktu Istirahat",s:"Istirahat siang Maya sering dipotong salah satu guru mapel untuk menambah tugas.",o:["Diam-diam keluar kelas","Menyampaikan dengan sopan lewat ketua kelas atau wali kelas","Marah di depan kelas"],a:1,p:"UU No. 23/2002 jo. UU No. 35/2014 Pasal 11",w:"Anak berhak beristirahat, memanfaatkan waktu luang, bergaul dengan teman sebaya, dan bermain. Dialog menjaga hubungan tetap baik.",an:"Seperti baterai ponsel: perlu diisi ulang agar bisa dipakai belajar lagi."},
+{t:"k",e:"📝🚫",n:"Jujur saat Ujian",s:"Saat ulangan, teman di belakang menawarkan contekan jawaban.",o:["Menerima karena soalnya sulit","Menolak dan mengerjakan sendiri sebisanya","Menawarkan balik jawabanmu"],a:1,p:"UU No. 20/2003 Pasal 12 ayat (2) huruf a; UU No. 23/2002 jo. UU No. 35/2014 Pasal 19 huruf e",w:"Kejujuran termasuk norma pendidikan dan akhlak mulia. Nilai hasil contekan tidak menunjukkan kemampuanmu yang sebenarnya.",an:"Seperti tes kesehatan: hasil palsu membuatmu tidak tahu bagian mana yang perlu diobati."}
+];
+const app=document.getElementById("app");let st={};
+const sh=a=>a.map(x=>[Math.random(),x]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
+const best=()=>{try{return +localStorage.getItem("hkq")||0}catch(e){return 0}};
+const setBest=v=>{try{localStorage.setItem("hkq",v)}catch(e){}};
+const L=t=>t=="h"?"HAK":"KEWAJIBAN";
+const sk=["#fcd9b6","#e0ac82","#c68642"];
+const bgS=`<defs><linearGradient id="sk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7dd3fc"/><stop offset="1" stop-color="#e0f2fe"/></linearGradient></defs><rect width="320" height="150" fill="url(#sk)"/><circle cx="290" cy="24" r="13" fill="#fde047"/><g class="cl" fill="#fff"><ellipse cx="150" cy="22" rx="22" ry="7"/><ellipse cx="240" cy="40" rx="18" ry="6"/></g><rect x="90" y="46" width="140" height="68" fill="#fca5a5"/><path d="M82 48l78-30 78 30z" fill="#b91c1c"/><g fill="#bae6fd"><rect x="102" y="58" width="24" height="18"/><rect x="194" y="58" width="24" height="18"/><rect x="102" y="84" width="24" height="18"/><rect x="194" y="84" width="24" height="18"/></g><rect x="146" y="84" width="28" height="30" fill="#92400e"/><path d="M24 112V60" stroke="#64748b" stroke-width="3"/><path d="M24 60h22v10H24z" fill="#ef4444"/><path d="M24 70h22v8H24z" fill="#fff"/><rect y="112" width="320" height="38" fill="#4ade80"/><rect y="112" width="320" height="5" fill="#22c55e"/>`;
+function kid(x,sh,m,o={}){const k=sk[o.k||0],y=82+(o.y||0);const f={h:'<path d="M-6 6q6 6 12 0" stroke="#7f1d1d" stroke-width="2" fill="none"/>',s:'<path d="M-6 10q6-6 12 0" stroke="#7f1d1d" stroke-width="2" fill="none"/>',a:'<path d="M-10 -9l7 3M10 -9l-7 3M-5 9h10" stroke="#7f1d1d" stroke-width="2"/>',t:'<circle cy="8" r="2.5" fill="#7f1d1d"/>'}[m];
+return `<g transform="translate(${x} ${y})"><rect x="-9" y="44" width="7" height="13" fill="#334155"/><rect x="2" y="44" width="7" height="13" fill="#334155"/><rect x="-13" y="14" width="26" height="33" rx="9" fill="${sh}"/>${o.arm?`<path d="M12 20l14-26" stroke="${k}" stroke-width="6" stroke-linecap="round"/>`:""}<circle r="17" fill="${k}"/><path d="M-17 -3a17 17 0 0 1 34 0q-17-9-34 0z" fill="${o.t?"#9ca3af":"#3b2a1f"}"/><circle cx="-6" cy="-1" r="2.5" fill="#111"/><circle cx="6" cy="-1" r="2.5" fill="#111"/>${o.t?'<circle cx="-6" cy="-1" r="5" fill="none" stroke="#111"/><circle cx="6" cy="-1" r="5" fill="none" stroke="#111"/>':""}${f}</g>`}
+const V={
+"Terlambat Upacara":kid(240,"#3b82f6","s")+kid(120,"#8b5cf6","t",{t:1})+'<circle cx="160" cy="66" r="9" fill="#fff" stroke="#334155" stroke-width="2"/><path d="M160 66v-6M160 66l5 3" stroke="#334155" stroke-width="2"/>',
+"Berani Bertanya":'<rect x="170" y="60" width="110" height="44" fill="#166534" stroke="#92400e" stroke-width="3"/><text x="225" y="92" font-size="28" fill="#fff" text-anchor="middle">?</text>'+kid(100,"#f59e0b","h",{arm:1})+kid(250,"#8b5cf6","h",{t:1}),
+"Jadwal Piket":kid(110,"#10b981","h")+kid(240,"#ef4444","t")+'<path d="M130 96l-24 44" stroke="#92400e" stroke-width="4"/><path d="M96 142l20-2-8-10z" fill="#facc15"/><circle cx="275" cy="134" r="8" fill="#fff" stroke="#334155" stroke-width="2"/>',
+"Dilindungi dari Perundungan":kid(80,"#ec4899","s")+kid(200,"#475569","a")+kid(262,"#475569","a")+'<path d="M80 14l20 7v12c0 12-9 18-20 22-11-4-20-10-20-22V21z" fill="#10b98199" stroke="#059669" stroke-width="2"/>',
+"Menghormati Guru":kid(110,"#f97316","s")+kid(220,"#8b5cf6","a",{t:1})+'<text x="250" y="60" font-size="26" fill="#ef4444" font-weight="700">!</text>',
+"Pendidikan Agama":kid(110,"#0ea5e9","t")+kid(220,"#a855f7","h",{t:1})+'<rect x="150" y="126" width="24" height="14" fill="#fff" stroke="#334155"/><path d="M162 126v14" stroke="#334155"/>',
+"Hak Beasiswa":kid(120,"#14b8a6","h")+kid(250,"#6366f1","h",{t:1})+'<path d="M120 58l24 9-24 9-24-9z" fill="#1e293b"/><rect x="178" y="108" width="34" height="22" rx="4" fill="#fde68a" stroke="#ca8a04" stroke-width="2"/><circle cx="195" cy="119" r="6" fill="#f59e0b"/>',
+"Akses untuk Semua":'<path d="M180 140l100-30v30z" fill="#cbd5e1"/>'+kid(110,"#f43f5e","h",{y:8})+'<circle cx="110" cy="128" r="17" fill="none" stroke="#334155" stroke-width="4"/><path d="M92 108h30v14" stroke="#334155" stroke-width="4" fill="none"/>'+kid(220,"#22c55e","h",{k:1}),
+"Menghargai Perbedaan":kid(90,"#3b82f6","h")+kid(160,"#f59e0b","s",{k:2})+kid(230,"#10b981","h",{k:1})+'<path d="M160 44c-9-12-24 2 0 17 24-15 9-29 0-17z" fill="#f43f5e"/>',
+"Menyampaikan Usul":kid(110,"#eab308","h")+kid(260,"#3b82f6","h",{t:1})+'<rect x="186" y="102" width="36" height="34" rx="4" fill="#f59e0b"/><rect x="195" y="108" width="18" height="4" fill="#78350f"/><rect x="142" y="96" width="16" height="20" fill="#fff" stroke="#94a3b8" transform="rotate(-12 150 106)"/>',
+"Waktu Istirahat":'<rect x="280" y="88" width="8" height="28" fill="#92400e"/><circle cx="284" cy="78" r="20" fill="#16a34a"/>'+kid(110,"#f97316","h")+kid(200,"#06b6d4","h",{k:1})+'<circle cx="155" cy="134" r="8" fill="#fff" stroke="#334155" stroke-width="2"/>',
+"Jujur saat Ujian":kid(110,"#0ea5e9","h")+kid(200,"#a3a3a3","t")+'<rect x="84" y="118" width="56" height="8" fill="#a16207"/><rect x="174" y="118" width="56" height="8" fill="#a16207"/><circle cx="160" cy="34" r="12" fill="#fff" stroke="#ef4444" stroke-width="4"/><path d="M152 42l16-16" stroke="#ef4444" stroke-width="4"/>'};
+const scene=d=>`<svg viewBox="0 0 320 150" width="100%" role="img" aria-label="${d.n}">${bgS}<g class="cast">${V[d.n]||""}</g><rect x="6" y="6" width="62" height="30" rx="12" fill="#fff" stroke="#94a3b8" stroke-width="2"/><text x="37" y="27" font-size="16" text-anchor="middle">${d.e}</text></svg>`;
+const conf=()=>`<g>${[...Array(14)].map((_,i)=>`<rect x="${10+i*22}" y="-8" width="6" height="9" fill="${["#f43f5e","#facc15","#22c55e","#3b82f6"][i%4]}"><animate attributeName="y" from="-8" to="150" dur="${(1+i%4*.25).toFixed(2)}s" fill="freeze"/></rect>`).join("")}</g>`;
+const owl=()=>`<svg viewBox="0 0 100 100" width="110" height="110"><ellipse cx="50" cy="60" rx="32" ry="33" fill="#a16207"/><ellipse cx="20" cy="64" rx="8" ry="17" fill="#854d0e"/><ellipse cx="80" cy="64" rx="8" ry="17" fill="#854d0e"/><ellipse cx="50" cy="70" rx="19" ry="21" fill="#fde68a"/><circle cx="37" cy="46" r="12" fill="#fff"/><circle cx="63" cy="46" r="12" fill="#fff"/><circle cx="39" cy="47" r="5" fill="#111"/><circle cx="61" cy="47" r="5" fill="#111"/><path d="M45 54l5 9 5-9z" fill="#f97316"/><path d="M50 12l32 11-32 11-32-11z" fill="#1e293b"/><rect x="38" y="28" width="24" height="6" fill="#1e293b"/><path d="M80 23v14" stroke="#facc15" stroke-width="2"/></svg>`;
+
+function home(){app.innerHTML=`<div class="mascot">${owl()}</div><h1>Quest Hak &amp; Kewajiban</h1><p class="c mut">Si Hoot, penjaga sekolah, butuh bantuanmu memilih tindakan yang benar!</p>
+<div class="card c">🏆 Skor tertinggi: <b>${best()}</b></div>
+<button class="btn" id="b1">🎮 Petualangan Skenario</button>
+<button class="btn h" id="b2">⚡ Tebak Hak atau Kewajiban</button>
+<button class="btn k" id="b3">📚 Perpustakaan Skenario (${D.length})</button>`;
+b1.onclick=()=>start("opt");b2.onclick=()=>start("sort");b3.onclick=()=>lib("all")}
+
+function start(m){st={m,q:sh(D).slice(0,8),i:0,s:0,l:3,k:0,ok:0};show()}
+const hud=()=>{h.innerHTML=`<div class="hud"><span>${"❤️".repeat(st.l)||"💔"}</span><span>⭐ ${st.s}</span><span>🔥 ${st.k}</span><span>${Math.min(st.i+1,st.q.length)}/${st.q.length}</span></div>`};
+
+function show(){if(st.i>=st.q.length||st.l<=0)return end();
+const d=st.q[st.i];let btns,pr;
+if(st.m=="opt"){pr="Apa tindakan yang benar?";btns=sh(d.o.map((t,j)=>[t,j==d.a?1:0])).map(([t,c])=>`<button class="opt" data-c="${c}">${t}</button>`).join("")}
+else{pr="Tindakan benar di sini adalah menjalankan…";btns=`<button class="opt" data-c="${d.t=="h"?1:0}">🛡️ HAK</button><button class="opt" data-c="${d.t=="k"?1:0}">📘 KEWAJIBAN</button>`}
+app.innerHTML=`<div id="h"></div><div class="stage" id="sg">${scene(d)}</div><div class="card"><b>${d.n}</b><p>${d.s}</p><p class="mut">${pr}</p>${btns}</div><div id="fb"></div>`;
+hud();app.querySelectorAll(".opt").forEach(b=>b.onclick=()=>ans(b,d))}
+
+function ans(b,d){const all=[...app.querySelectorAll(".opt")];all.forEach(x=>{x.disabled=true;if(x.dataset.c=="1")x.classList.add("ok")});
+const c=b.dataset.c=="1";if(!c)b.classList.add("no");
+if(c){st.s+=10+Math.min(st.k,5)*2;st.k++;st.ok++}else{st.l--;st.k=0}
+hud();sg.className="stage "+(c?"pop":"shake");if(c)sg.firstElementChild.insertAdjacentHTML("beforeend",conf());
+const last=st.i>=st.q.length-1||st.l<=0;
+fb.innerHTML=`<div class="card fb ${c?"g":"r"}"><h3>${c?"Benar! 🎉":"Belum tepat 😅"}</h3>
+<p><span class="tag ${d.t}">${L(d.t)}</span> Tindakan yang benar: <b>${d.o[d.a]}</b></p>
+<p>📜 <b>Dasar hukum:</b> ${d.p}</p><p>💡 <b>Mengapa benar:</b> ${d.w}</p><p>🧩 <b>Analogi:</b> ${d.an}</p>
+<button class="btn" id="nx">${last?"Lihat hasil 🏁":"Lanjut ➜"}</button></div>`;
+nx.onclick=()=>{st.i++;show()};fb.scrollIntoView({behavior:"smooth",block:"start"})}
+
+function end(){const r=st.ok/st.q.length,stars=r>=.85?3:r>=.55?2:r>0?1:0;
+const t=r>=.85?"Pahlawan Sekolah!":r>=.55?"Siswa Teladan":"Terus Berlatih";
+if(st.s>best())setBest(st.s);
+app.innerHTML=`<div class="mascot">${st.l>0?"🏆":"🦉"}</div><h1>${t}</h1><div class="card c"><div style="font-size:2.2rem">${"⭐".repeat(stars)||"☆"}</div><p>Skor <b>${st.s}</b> · Benar ${st.ok}/${st.q.length}</p><p class="mut">${st.l>0?"Kamu menjaga hak dan kewajiban dengan baik.":"Nyawa habis! Baca perpustakaan lalu coba lagi."}</p></div>
+<button class="btn" id="r1">🔁 Main lagi</button><button class="btn k" id="r2">📚 Buka perpustakaan</button><button class="btn h" id="r3">🏠 Menu</button>`;
+r1.onclick=()=>start(st.m);r2.onclick=()=>lib("all");r3.onclick=home}
+
+function lib(f){const list=D.filter(d=>f=="all"||d.t==f);
+app.innerHTML=`<h1>📚 Perpustakaan</h1><div class="tabs">${[["all","Semua"],["h","Hak"],["k","Kewajiban"]].map(([k,n])=>`<button class="${k==f?"on":""}" data-f="${k}">${n}</button>`).join("")}</div>
+${list.map(d=>`<div class="card"><details><summary>${d.e} ${d.n} <span class="tag ${d.t}">${L(d.t)}</span></summary><div class="stage mini">${scene(d)}</div><p>${d.s}</p><p>✅ <b>${d.o[d.a]}</b></p><p>📜 <b>Pasal:</b> ${d.p}</p><p>💡 ${d.w}</p><p>🧩 <i>${d.an}</i></p></details></div>`).join("")}
+<p class="mut c" style="font-size:.8rem">Materi edukasi umum, bukan nasihat hukum. Periksa teks resmi peraturan untuk kebutuhan formal.</p>
+<button class="btn h" id="bk">🏠 Menu</button>`;
+app.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>lib(b.dataset.f));bk.onclick=home}
+home();
+</script></body></html>
